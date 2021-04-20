@@ -1,0 +1,34 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class Exception{
++ +toString(): String
+}
+class BudgetRunoutException{
+- -player: Player
++ +BudgetRunoutException(player: Player)
++ +getMessage(): String
++ +toString(): String
+}
+
+class MedicalException{
+- -population: int
+- -activeCases: int
++ +MedicalException(population: int, activeCases:int)
++ +getMessage(): String
++ +toString(): String
+}
+
+class NoEnoughBudgetException{
+- -player: Player
+- -cost: int
++ +NoEnoughBudgetException(player:Player, cost:int )
++ +getMessage(): String
++ +toString(): String
+}
+
+Exception <|-- BudgetRunoutException
+Exception <|-- NoEnoughBudgetException
+Exception <|-- MedicalException
+
+@enduml

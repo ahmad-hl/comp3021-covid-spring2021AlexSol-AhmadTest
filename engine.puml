@@ -1,0 +1,162 @@
+@startuml
+'https://plantuml.com/class-diagram
+class City{
+- -population: int
+- -travelBanned: bool
+- -activeCases: int
+- -recoveredCases: int
+- -numNewCases: int
+- -numFormerCases: int
+- -medicationFacilities: int
+
++ +City(id: int, name: String, population: int,travelBanned: bool, active: int, recovered: int)
++ +addMedicationFacilities()
++ +decreaseMedicationFacility()
++ +increaseActiveCases(incr: int) throws MedicalException
++ +decreaseActiveCases(decrement: int)
++ +setTravelBanned(val: bool)
++ +setNumNewCases(numNewCases: int)
++ +getNumNewCases(): int
++ +setNumFormerCases(numFormerCases: int)
++ +getNumFormerCases(): int
++ +getId(): int
++ +getName(): String
++ +getPopulation(): int
++ +isTravelBanned(): bool
++ +getActiveCases(): int
++ +getRecoveredCases(): int
++ +getMedicationFacilities(): int
++ +isNewCasesIncreasing(): bool
++ +toString(): String
+}
+
+class Player{
+- -haStaffs: List<HealthAuthorityStaff>
+- -contTechniques: List<Containment>
+- -name: String
+- -budget: int
+- -tourismIncome: int
+- -points: int
+- -city: City
++ +Player(name: String, budget: int, tourismIncome: int, points: int)
++ +toString(): String
++ +decreaseBudget(decrement: int)
++ +increaseBudget(increment: int)
++ +addPoints(increment: int)
++ +decreasePoints(decrement: int)
++ +hasReadyHAStaff(): boolean
++ +computeNewInfectedCases() throws MedicalException
++ +generateUnexpectedDistasters()
++ +addContainmentTech(cont: Containment)
++ +setCity(city: City)
++ +incrementProtection_level(level: int, cont: Containment)
++ +incrementVaccination_level(level: int, cont: Containment)
++ +halfProtection_level()
++ +halfVaccination_level()
++ +getHAStaffs(): List<HealthAuthorityStaff>
++ +getCity(): City
++ +getContainTechniques(): List<Containment>
++ +getName(): String
++ +getBudget(): int
++ +getTourismIncome(): int
++ +getPoints(): int
+}
+
+class GameEngine{
+- -gameMap: GameMap
+- -turns: int
+- -getSelection(min: int, max: int, name: String)
+- -processPlayersTurn() throws MedicalException, BudgetRunoutException, NoEnoughBudgetException
+- -selectHAStaff(player: Player): HealthAuthorityStaff
+- -selectAndPerformAction(player: Player, haStaff: HealthAuthorityStaff, city: City) throws BudgetRunoutException, NoEnoughBudgetException
+- -processPlayerCommand(command: int, player: Player, haStaff: HealthAuthorityStaff, city: City) throws NoEnoughBudgetException, BudgetRunoutException
++ +announceWinner()
+}
+
+class GameMap{
+- -players: List<Player>
++ +getPlayers(): List<Player>
++ +loadPlayers()
+}
+
+abstract class HealthAuthorityStaff{
+# #leadership: int
+# #medicine: int
+# #experience: int
+- -isReady: bool
++ +HealthAuthorityStaff(leadership: int, medicine: int, exper: int)
++ +isReady(): bool
++ +beginTurn()
++ +endTurn()
+# #getBonusPoints(): int
++ +developMedicationFacility(player: Player, city: City) throws NoEnoughBudgetException, BudgetRunoutException
++ +buildMasksFactory(player: Player, city: City) throws NoEnoughBudgetException, BudgetRunoutException
++ +upgradeFMaskQuality(player: Player, city: City) throws NoEnoughBudgetException, BudgetRunoutException
++ +banTravel(player: Player, city: City)
++ +liftTravelBan(player: Player, city: City)
++ +developVaccine(player: Player, city: City) throws NoEnoughBudgetException, BudgetRunoutException
++ +upgradeVaccine(player: Player, city: City) throws NoEnoughBudgetException, BudgetRunoutException
++ +toString() : String
+}
+
+class ChiefExecutive{
+# #getBonusPoints(): int
++ +banTravel(player: Player, city: City)
++ +liftTravelBan(player: Player, city: City)
+}
+class HealthMinister{
+# #getBonusPoints(): int
++ +developMedicationFacility(player: Player, city: City)
++ +buildMasksFactory(player: Player, city: City)
++ +toString() : String
+}
+class Epidemiologist{
+# #getBonusPoints(): int
++ +upgradeFMaskQuality(player: Player, city: City)
++ +developVaccine(player: Player, city: City)
++ +upgradeVaccine(player: Player, city: City)
++ +toString() : String
+}
+HealthAuthorityStaff <|-- ChiefExecutive
+HealthAuthorityStaff <|-- HealthMinister
+HealthAuthorityStaff <|-- Epidemiologist
+
+abstract class Containment{
+# #protection_level
+# #medication_level
+# #vaccination_level
++ +getProtection_level(): int
++ +getMedication_level(): int
++ +getVaccination_level(): int
++ +setProtection_level(level: int)
++ +setMedication_level(level: int)
++ +setVaccination_level(level: int)
++ +toString() : String
+}
+
+class FaceMask{
++ +FaceMask()
++ +getProtection_level(): int
+}
+class Isolation{
++ +Isolation()
++ +getProtection_level(): int
+}
+class Treatment{
++ +Treatment()
++ +getMedication_level(): int
+}
+class Vaccination{
++ +Vaccination()
++ +getVaccination_level(): int
+}
+Containment <|-- FaceMask
+Containment <|-- Isolation
+Containment <|-- Treatment
+Containment <|-- Vaccination
+
+Player <-- City
+Player <-- Containment
+Player <-- HealthAuthorityStaff
+GameEngine <-- GameMap
+@enduml
