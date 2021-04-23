@@ -20,7 +20,7 @@ class ChiefExecutiveOfHATest {
 
     @BeforeEach
     void setUp() {
-        System.out.println("initializing Method....");
+        System.out.println("initializing ChiefExecutiveOfHA....");
         ceoStaff = new ChiefExecutiveOfHA(1,1,1);
         ny = new City(1,"ny", 2000, false, 800,0 );
 
@@ -29,7 +29,7 @@ class ChiefExecutiveOfHATest {
 
     @AfterEach
     void tearDown() {
-        System.out.println("Cleaning Method up....");
+        System.out.println("Cleaning ChiefExecutiveOfHA up....");
     }
 
     @Test

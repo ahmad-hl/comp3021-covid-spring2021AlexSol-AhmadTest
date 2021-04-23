@@ -33,7 +33,7 @@ class PlayerTest {
 
     @BeforeEach
     void Setup(){
-        System.out.println("initializing Method....");
+        System.out.println("initializing Player....");
         newyork = new City(1,"ny", 2000, false, 800,0 );
         poorPlayer = new Player("U.S.", 1000, 100, 0);
         poorPlayer.setCity(newyork);
@@ -48,7 +48,7 @@ class PlayerTest {
 
     @AfterEach
     void TearDown(){
-        System.out.println("Cleaning Method Up....");
+        System.out.println("Cleaning Player....");
     }
 
     @Test
