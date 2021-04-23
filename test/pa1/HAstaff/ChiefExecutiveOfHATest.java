@@ -73,15 +73,4 @@ class ChiefExecutiveOfHATest {
         // points = 0
         Assertions.assertEquals(0, poorPlayer.getPoints());
     }
-
-    @Test
-    void testToString() {
-        ceoStaff.beginTurn();
-        String toStr = String.format("ChiefExecutiveOfHA | READY, leadership %d, medicine %d, experience %d",ceoStaff.leadership, ceoStaff.medicine, ceoStaff.experience);
-        Assertions.assertEquals(toStr, ceoStaff.toString());
-
-        ceoStaff.endTurn();
-        toStr = String.format("ChiefExecutiveOfHA | DONE, leadership %d, medicine %d, experience %d",ceoStaff.leadership, ceoStaff.medicine, ceoStaff.experience);
-        Assertions.assertEquals(toStr, ceoStaff.toString());
-    }
 }

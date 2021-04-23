@@ -51,6 +51,7 @@ class PlayerTest {
         System.out.println("Cleaning Player....");
     }
 
+    //Unit Testing for Player class
     @Test
     void testHasReadyHAStaff(){
         //false
@@ -63,6 +64,46 @@ class PlayerTest {
         assertTrue(has);
     }
 
+    @Test
+    void simpleTestIncrement_halfProtection() {
+        //size =1
+        poorPlayer.addContainmentTech(new FaceMask());
+        assertEquals(1, poorPlayer.getContainTechniques().size());
+
+        //Half protection = 30
+        poorPlayer.incrementProtection_level(30, poorPlayer.getContainTechniques().get(0) );
+        assertEquals(30, poorPlayer.getContainTechniques().get(0) .getProtection_level());
+
+        //Half protection = 15
+        poorPlayer.halfProtection_level();
+        assertEquals(15, poorPlayer.getContainTechniques().get(0).getProtection_level());
+
+        //protection = 100 at max
+        poorPlayer.incrementProtection_level(110, poorPlayer.getContainTechniques().get(0) );
+        assertEquals(100, poorPlayer.getContainTechniques().get(0) .getProtection_level());
+    }
+
+
+    @Test
+    void simpleTestIncrement_halfVaccination() {
+        //size = 1
+        poorPlayer.addContainmentTech(new Vaccination());
+        assertEquals(1, poorPlayer.getContainTechniques().size());
+        //Half protection = 50
+        poorPlayer.incrementVaccination_level(50, poorPlayer.getContainTechniques().get(0) );
+        assertEquals(50, poorPlayer.getContainTechniques().get(0) .getVaccination_level());
+
+        //Half protection = 25
+        poorPlayer.halfVaccination_level();
+        assertEquals(25, poorPlayer.getContainTechniques().get(0).getVaccination_level());
+
+        //vaccination = 100 at max
+        poorPlayer.incrementVaccination_level(110, poorPlayer.getContainTechniques().get(0) );
+        assertEquals(100, poorPlayer.getContainTechniques().get(0) .getVaccination_level());
+    }
+
+
+    //Integration Testing from Player's POV
     @Test
     void test1_ComputeNewInfectedCases(){
         //Case study 1: no protection or vaccination:
@@ -108,44 +149,6 @@ class PlayerTest {
         assertEquals(600, poorPlayer.getCity().getNumNewCases());
         //NewInfectedCases+ active cases
         assertEquals(1400 , poorPlayer.getCity().getActiveCases());
-    }
-
-    @Test
-    void simpleTestIncrement_halfProtection() {
-        //size =1
-        poorPlayer.addContainmentTech(new FaceMask());
-        assertEquals(1, poorPlayer.getContainTechniques().size());
-
-        //Half protection = 30
-        poorPlayer.incrementProtection_level(30, poorPlayer.getContainTechniques().get(0) );
-        assertEquals(30, poorPlayer.getContainTechniques().get(0) .getProtection_level());
-
-        //Half protection = 15
-        poorPlayer.halfProtection_level();
-        assertEquals(15, poorPlayer.getContainTechniques().get(0).getProtection_level());
-
-        //protection = 100 at max
-        poorPlayer.incrementProtection_level(110, poorPlayer.getContainTechniques().get(0) );
-        assertEquals(100, poorPlayer.getContainTechniques().get(0) .getProtection_level());
-    }
-
-
-    @Test
-    void simpleTestIncrement_halfVaccination() {
-        //size = 1
-        poorPlayer.addContainmentTech(new Vaccination());
-        assertEquals(1, poorPlayer.getContainTechniques().size());
-        //Half protection = 50
-        poorPlayer.incrementVaccination_level(50, poorPlayer.getContainTechniques().get(0) );
-        assertEquals(50, poorPlayer.getContainTechniques().get(0) .getVaccination_level());
-
-        //Half protection = 25
-        poorPlayer.halfVaccination_level();
-        assertEquals(25, poorPlayer.getContainTechniques().get(0).getVaccination_level());
-
-        //vaccination = 100 at max
-        poorPlayer.incrementVaccination_level(110, poorPlayer.getContainTechniques().get(0) );
-        assertEquals(100, poorPlayer.getContainTechniques().get(0) .getVaccination_level());
     }
 
     @Test
