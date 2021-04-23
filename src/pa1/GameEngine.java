@@ -14,7 +14,7 @@ import java.util.Scanner;
  */
 public class GameEngine {
 
-    private GameMap gameMap = new GameMap();
+    public GameMap gameMap = new GameMap();
     private int turns;
     private Scanner userInputScanner = new Scanner(System.in);
 

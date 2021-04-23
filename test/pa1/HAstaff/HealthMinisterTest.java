@@ -32,14 +32,7 @@ class HealthMinisterTest {
     }
 
     @Test
-    void getBonusPoints() {
-        //bonus = leadership + medicine + experience = 3
-        int bonus = ministerStaff.getBonusPoints();
-        Assertions.assertEquals(3,bonus);
-    }
-
-    @Test
-    void developMedicationFacility() {
+    void testDevelopMedicationFacility() {
         //facilities = 0
         Assertions.assertEquals(0, ny.getMedicationFacilities());
         try {
@@ -50,11 +43,9 @@ class HealthMinisterTest {
             e.printStackTrace();
         }
 
-        //facilities = 1
-        Assertions.assertEquals(1, ny.getMedicationFacilities());
+        //budget= 1000-500=500 [Constants.MEDICATION_FACILITY_COST=500]
+        Assertions.assertEquals(500, poorPlayer.getBudget());
 
-        //recovered cases = 100 [Constants.MEDICATION_FACILITY_CAPACITY]
-        Assertions.assertEquals(100, ny.getRecoveredCases());
         //active cases = 800 - 100 = 700
         Assertions.assertEquals(700, ny.getActiveCases());
 
@@ -67,10 +58,7 @@ class HealthMinisterTest {
     }
 
     @Test
-    void buildMasksFactory() {
-        //budget = 1000
-        Assertions.assertEquals(1000, poorPlayer.getBudget());
-
+    void testBuildMasksFactory() {
         try {
             ministerStaff.buildMasksFactory(poorPlayer, ny);
         } catch (NoEnoughBudgetException e) {
@@ -81,67 +69,68 @@ class HealthMinisterTest {
 
         //budget= 1000-100=900 [Constants.BUILD_MASK_FACTORY_COST=100]
         Assertions.assertEquals(900, poorPlayer.getBudget());
-
         // protectionLevel = 30 [MASK_PROTECTION_Percentage=30]
         Assertions.assertEquals(30, poorPlayer.getContainTechniques().get(0).getProtection_level());
-
         // points = 3
         Assertions.assertEquals(3, poorPlayer.getPoints());
     }
 
     @Test
-    void upgradeFMaskQuality() {
+    void testBuild_UpgradeFMaskQuality() {
         try {
             ministerStaff.upgradeFMaskQuality(poorPlayer, ny);
+            // points = 0
+            Assertions.assertEquals(0, poorPlayer.getPoints());
+            //No containment techniques, size=0 (Must NOT add Facemask obj if not exists )
+            Assertions.assertEquals(0, poorPlayer.getContainTechniques().size());
+
+
+            ministerStaff.buildMasksFactory(poorPlayer, ny);
+            // protectionLevel = 30 [MASK_PROTECTION_Percentage=30]
+            Assertions.assertEquals(30, poorPlayer.getContainTechniques().get(0).getProtection_level());
+            // points = 3
+            Assertions.assertEquals(3, poorPlayer.getPoints());
+
+            ministerStaff.upgradeFMaskQuality(poorPlayer, ny);
+            // points = 3
+            Assertions.assertEquals(3, poorPlayer.getPoints());
+            //size=1
+            Assertions.assertEquals(1, poorPlayer.getContainTechniques().size());
+            // protectionLevel = 50 [UPGRADE_MASK_PROTECTION_Percentage=50]
+            Assertions.assertEquals(50, poorPlayer.getContainTechniques().get(0).getProtection_level());
+
         } catch (NoEnoughBudgetException e) {
             e.printStackTrace();
         } catch (BudgetRunoutException e) {
             e.printStackTrace();
         }
-        // points = 0
-        Assertions.assertEquals(0, poorPlayer.getPoints());
+
     }
 
     @Test
-    void developVaccine() {
+    void testDevelop_UpgradeVaccine() {
         try {
             ministerStaff.developVaccine(poorPlayer, ny);
-        } catch (NoEnoughBudgetException e) {
-            e.printStackTrace();
-        } catch (BudgetRunoutException e) {
-            e.printStackTrace();
-        }
-        // points = 0
-        Assertions.assertEquals(0, poorPlayer.getPoints());
-    }
+            // points = 0
+            Assertions.assertEquals(0, poorPlayer.getPoints());
+            //budget= 1000-50=950 [Constants.DEVELOP_VACCINE_COST=50]
+            Assertions.assertEquals(950, poorPlayer.getBudget());
+            // vaccination level = 50 [DEVELOP_VACCINE_Percentage=50]
+            Assertions.assertEquals(50, poorPlayer.getContainTechniques().get(0).getVaccination_level());
 
-    @Test
-    void upgradeVaccine() {
-        try {
             ministerStaff.upgradeVaccine(poorPlayer, ny);
+            // points = 0
+            Assertions.assertEquals(0, poorPlayer.getPoints());
+            //budget= 950-50=900 [Constants.UPGRADE_VACCINE_COST=50]
+            Assertions.assertEquals(900, poorPlayer.getBudget());
+            // vaccination level = 100 [UPGRADE_VACCINE_Percentage=50]
+            Assertions.assertEquals(100, poorPlayer.getContainTechniques().get(0).getVaccination_level());
+
         } catch (NoEnoughBudgetException e) {
             e.printStackTrace();
         } catch (BudgetRunoutException e) {
             e.printStackTrace();
         }
-        // points = 0
-        Assertions.assertEquals(0, poorPlayer.getPoints());
     }
 
-    @Test
-    void liftBanTravelTest() {
-        //travelBanned = false
-        Assertions.assertEquals(false, ny.isTravelBanned());
-        ministerStaff.banTravel(poorPlayer,ny);
-        //travelBanned = true
-        Assertions.assertEquals(true, ny.isTravelBanned());
-        //size = 1
-        Assertions.assertEquals(1, poorPlayer.getContainTechniques().size());
-
-        ministerStaff.liftTravelBan(poorPlayer,ny);
-        //travelBanned = false
-        Assertions.assertEquals(false, ny.isTravelBanned());
-        // points = 0
-        Assertions.assertEquals(0, poorPlayer.getPoints());
-    }
 }

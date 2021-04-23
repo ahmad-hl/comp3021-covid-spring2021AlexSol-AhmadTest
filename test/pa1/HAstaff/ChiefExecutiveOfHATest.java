@@ -33,25 +33,22 @@ class ChiefExecutiveOfHATest {
     }
 
     @Test
-    void getBonusPoints() {
-        //bonus = leadership + experience = 2
-        int bonus = ceoStaff.getBonusPoints();
-        Assertions.assertEquals(2,bonus);
-    }
-
-    @Test
     void liftBanTravelTest() {
-        //travelBanned = false
-        Assertions.assertEquals(false, ny.isTravelBanned());
         ceoStaff.banTravel(poorPlayer,ny);
         //travelBanned = true
-        Assertions.assertEquals(true, ny.isTravelBanned());
+        Assertions.assertTrue(ny.isTravelBanned());
         //size = 1
         Assertions.assertEquals(1, poorPlayer.getContainTechniques().size());
+        //protection level = 50
+        Assertions.assertEquals(50, poorPlayer.getContainTechniques().get(0).getProtection_level());
+        // points = 2
+        Assertions.assertEquals(2, poorPlayer.getPoints());
 
         ceoStaff.liftTravelBan(poorPlayer,ny);
         //travelBanned = false
-        Assertions.assertEquals(false, ny.isTravelBanned());
+        Assertions.assertFalse(ny.isTravelBanned());
+        //size = 0
+        Assertions.assertEquals(0, poorPlayer.getContainTechniques().size());
         //System.out.println(String.format("isBanned: %s", ny.isTravelBanned() ? "False" : "True"));
     }
 
@@ -72,6 +69,9 @@ class ChiefExecutiveOfHATest {
         // medicationLevel = 100 * 100/ 800 = 12 [.5]
         int mediLevel = ny.getRecoveredCases() * 100 / (ny.getActiveCases() + ny.getRecoveredCases());
         Assertions.assertEquals(mediLevel, poorPlayer.getContainTechniques().get(0).getMedication_level());
+
+        // points = 0
+        Assertions.assertEquals(0, poorPlayer.getPoints());
     }
 
     @Test
