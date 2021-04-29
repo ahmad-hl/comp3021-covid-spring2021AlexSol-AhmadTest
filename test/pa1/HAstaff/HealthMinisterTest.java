@@ -16,27 +16,28 @@ class HealthMinisterTest {
 
     HealthMinister ministerStaff;
     Player poorPlayer;
-    City ny;
 
     @BeforeEach
     void setUp() {
-        System.out.println("initializing HealthMinister....");
+//        System.out.println("initializing HealthMinister....");
         ministerStaff = new HealthMinister(1,1,1);
-        ny = new City(2,"ny", 2000, false, 800,0 );
+        City newyork = new City(2,"ny", 2000, false, 800,0 );
         poorPlayer = new Player("U.S.", 1000, 100, 0);
+        poorPlayer.setCity(newyork);
     }
 
     @AfterEach
     void tearDown() {
-        System.out.println("Cleaning up HealthMinister....");
+
+//        System.out.println("Cleaning up HealthMinister....");
     }
 
     @Test
     void testDevelopMedicationFacility() {
         //facilities = 0
-        Assertions.assertEquals(0, ny.getMedicationFacilities());
+        Assertions.assertEquals(0, poorPlayer.getCity().getMedicationFacilities());
         try {
-            ministerStaff.developMedicationFacility(poorPlayer, ny);
+            ministerStaff.developMedicationFacility(poorPlayer, poorPlayer.getCity());
         } catch (NoEnoughBudgetException e) {
             e.printStackTrace();
         } catch (BudgetRunoutException e) {
@@ -47,10 +48,10 @@ class HealthMinisterTest {
         Assertions.assertEquals(500, poorPlayer.getBudget());
 
         //active cases = 800 - 100 = 700
-        Assertions.assertEquals(700, ny.getActiveCases());
+        Assertions.assertEquals(700, poorPlayer.getCity().getActiveCases());
 
         // medicationLevel = 100 * 100/ 800 = 12 [.5]
-        int mediLevel = ny.getRecoveredCases() * 100 / (ny.getActiveCases() + ny.getRecoveredCases());
+        int mediLevel = poorPlayer.getCity().getRecoveredCases() * 100 / (poorPlayer.getCity().getActiveCases() + poorPlayer.getCity().getRecoveredCases());
         Assertions.assertEquals(mediLevel, poorPlayer.getContainTechniques().get(0).getMedication_level());
 
         // points = 3
@@ -60,7 +61,7 @@ class HealthMinisterTest {
     @Test
     void testBuildMasksFactory() {
         try {
-            ministerStaff.buildMasksFactory(poorPlayer, ny);
+            ministerStaff.buildMasksFactory(poorPlayer, poorPlayer.getCity());
         } catch (NoEnoughBudgetException e) {
             e.printStackTrace();
         } catch (BudgetRunoutException e) {
@@ -78,20 +79,20 @@ class HealthMinisterTest {
     @Test
     void testBuild_UpgradeFMaskQuality() {
         try {
-            ministerStaff.upgradeFMaskQuality(poorPlayer, ny);
+            ministerStaff.upgradeFMaskQuality(poorPlayer, poorPlayer.getCity());
             // points = 0
             Assertions.assertEquals(0, poorPlayer.getPoints());
             //No containment techniques, size=0 (Must NOT add Facemask obj if not exists )
             Assertions.assertEquals(0, poorPlayer.getContainTechniques().size());
 
 
-            ministerStaff.buildMasksFactory(poorPlayer, ny);
+            ministerStaff.buildMasksFactory(poorPlayer, poorPlayer.getCity());
             // protectionLevel = 30 [MASK_PROTECTION_Percentage=30]
             Assertions.assertEquals(30, poorPlayer.getContainTechniques().get(0).getProtection_level());
             // points = 3
             Assertions.assertEquals(3, poorPlayer.getPoints());
 
-            ministerStaff.upgradeFMaskQuality(poorPlayer, ny);
+            ministerStaff.upgradeFMaskQuality(poorPlayer, poorPlayer.getCity());
             // points = 3
             Assertions.assertEquals(3, poorPlayer.getPoints());
             //size=1
@@ -110,7 +111,7 @@ class HealthMinisterTest {
     @Test
     void testDevelop_UpgradeVaccine() {
         try {
-            ministerStaff.developVaccine(poorPlayer, ny);
+            ministerStaff.developVaccine(poorPlayer, poorPlayer.getCity());
             // points = 0
             Assertions.assertEquals(0, poorPlayer.getPoints());
             //budget= 1000-50=950 [Constants.DEVELOP_VACCINE_COST=50]
@@ -118,7 +119,7 @@ class HealthMinisterTest {
             // vaccination level = 50 [DEVELOP_VACCINE_Percentage=50]
             Assertions.assertEquals(50, poorPlayer.getContainTechniques().get(0).getVaccination_level());
 
-            ministerStaff.upgradeVaccine(poorPlayer, ny);
+            ministerStaff.upgradeVaccine(poorPlayer, poorPlayer.getCity());
             // points = 0
             Assertions.assertEquals(0, poorPlayer.getPoints());
             //budget= 950-50=900 [Constants.UPGRADE_VACCINE_COST=50]
