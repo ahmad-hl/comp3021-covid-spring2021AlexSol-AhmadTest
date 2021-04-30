@@ -41,7 +41,8 @@ class CityTest {
         newyork.decreaseActiveCases(2100);
         //Either 0 or -100
         assertTrue(newyork.getActiveCases() == 0 || newyork.getActiveCases() ==-100);
-        assertEquals(2000, newyork.getRecoveredCases());
+        //Either population 2000 or active cases 800
+        assertTrue(newyork.getRecoveredCases() == 2000 || newyork.getRecoveredCases() == 800);
     }
 
     @Test
